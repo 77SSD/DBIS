@@ -1,0 +1,153 @@
+--INSERT & DELETE --
+
+
+q3) set client1 Sadhika
+  --OK
+  set client1 Prt
+  --OK
+  get client1
+  --"Prt"
+
+q4)get client777
+
+// Result: nil (since client33 is not present in the database)//
+
+q6)del client777
+
+// result :  (integer) 0 (since client33 is not present in the database)//
+
+q7)set client:1:name Alice
+  --OK 
+
+q8)set client:1:level 1
+  --OK
+
+--DELETE BASED ON TIME -- 
+
+q2)
+exists client:1:address
+// result : (integer) 0 (since client:1:address does not exist)//
+
+q3)
+set Message "Hello world"
+
+q6)
+ttl client:1:name
+// result : (integer) -1 (since client:1:name has not been assigned an expiry time)//
+
+q7)
+ttl client:1:address
+// result : (integer) -2 (since client:1:address does not exist in the database)//
+
+q8)
+// result : (integer) 0 (since client:1:name does not have an expiration time)//
+
+q11)
+// result : (integer) 0 (since client:1:address does not exist in the database)//
+
+
+--LIST--
+
+q2)lpush customers Alice Bob Charles
+  --RESULT
+   (integer) 3
+  lrange customers 0 2
+  1) "Charles"
+  2) "Bob"
+  3) "Alice"
+The values are pushed into the list from the left end
+
+q4)lrange customers 0 1
+  
+q6)linsert customers before Bob Dumbledore
+
+q9)lpop customers 1
+   --RESULT  
+
+q10)flushall
+  --RESULT
+    OK
+
+--SET--
+q2)
+sadd courses Economics
+
+q4)sadd courses Physics
+// result : (integer) 0 (since Physics is already present in the set, hence "Physics" is not added again)
+
+q7)
+sismember courses Chemistry
+// result : (integer) 0 (since Chemistry is not a member of the set of the value courses)
+
+q10)
+srem courses Chemistry
+// result :  0 (since Chemistry is not present in the set, hence "Chemistry" is not deleted)
+
+q11)
+flushall
+
+
+---ORDERED SET---
+
+
+3) zadd Clients 3200 Charles
+    --result
+     zrange Clients 0 -1 WITHSCORES
+1) "Charles"
+2) "3200"
+3) "Alice"
+4) "3300"
+5) "Robert"
+6) "3400"
+7) "Harry"
+8) "3500"
+The score of Charles is overwritten
+
+5) zrank Clients Dumbledore
+   --RESULT
+    (nil)
+
+7)zrange Clients 0 -1
+--RESULT
+1) "Charles"
+2) "Alice"
+3) "Harry"
+4) "Robert"
+zrank Clients Charles
+(integer) 0
+zrank Clients Alice
+(integer) 1
+zrank Clients Harry
+(integer) 2
+zrank Clients Robert
+(integer) 3
+
+8)flushall
+
+
+---HASHSET---
+q3)
+hget Customer:1 address
+// result : (nil) (since address is not present in the hash set)//
+
+q4)
+hget Customer:2 name
+// result : (nil) (since Customer:2 is not present in the hash set)//
+
+q6)
+hgetall Customer:2
+// result : (empty list or set) (since Customer:2 is not present in the hash set)//
+
+q9)
+hkeys Customer:2
+// result : (empty list or set) (since Customer:2 is not present in the hash set)//
+
+q10)
+hvals Customer:2
+// result : (empty list or set) (since Customer:2 is not present in the hash set)//
+
+
+
+
+ 
+   

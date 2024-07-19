@@ -1,0 +1,167 @@
+Insert and Delete
+
+3)set client1 Dhrutika
+  --OK
+  set client1 Tejal
+  --OK
+  get client1
+  --"Tejal"
+
+4) get cl
+   --(nil)
+
+6) del course
+   --(integer) 0
+
+7)set client:1:name Alice
+  --OK
+
+8)set client:1:level 1
+  --OK
+
+
+Delete based on time
+
+2)exists client:1:address
+  --RESULT
+   (integer) 0
+
+3)set message "Hello world"
+   --RESULT
+     OK
+
+6) ttl client1
+  --RESULT
+    (integer) -1
+
+7)ttl user
+  --RESULT
+   (integer) -2
+
+10)persist client:1:name
+  --RESULT
+    (integer) 0
+
+11)persist user
+   --RESULT
+    (integer) 0
+
+
+List
+
+2)lpush customers Alice Bob Charles
+  --RESULT
+   (integer) 3
+  lrange customers 0 2
+  1) "Charles"
+  2) "Bob"
+  3) "Alice"
+The values are pushed into the list from the left end
+
+4)lrange customers 0 1
+  --RESULT
+  1) "Charles"
+  2) "Bob"
+
+
+6)linsert customers before Bob Dumbledore
+
+9)lpop customers 1
+   --RESULT  
+     1) "Charles"
+
+10)flushall
+  --RESULT
+    OK
+
+Set
+
+2)sadd courses Economics
+    --RESULT
+     (integer) 1
+     smembers courses
+	1) "CS"
+	2) "Math"
+	3) "Physics"
+	4) "Economics"
+
+4)sadd courses Physics
+  --RESULT
+  (integer) 0
+   smembers courses
+	1) "CS"
+	2) "Math"
+	3) "Physics"
+	4) "Economics"
+   Physics is not added
+
+7)sismember courses Chemistry
+  --RESULT
+   (integer) 0
+    0 implies its not a member
+
+10)srem courses Chemistry
+   --RESULT 
+    (integer) 0
+    0 implies its not removed
+
+11)flushall
+
+
+Ordered Set
+
+3) zadd Clients 3200 Charles
+    --result
+     zrange Clients 0 -1 WITHSCORES
+1) "Charles"
+2) "3200"
+3) "Alice"
+4) "3300"
+5) "Robert"
+6) "3400"
+7) "Harry"
+8) "3500"
+The score of Charles is overwritten
+
+5) zrank Clients Dumbledore
+   --RESULT
+    (nil)
+
+7)zrange Clients 0 -1
+--RESULT
+1) "Charles"
+2) "Alice"
+3) "Harry"
+4) "Robert"
+zrank Clients Charles
+(integer) 0
+zrank Clients Alice
+(integer) 1
+zrank Clients Harry
+(integer) 2
+zrank Clients Robert
+(integer) 3
+
+8)flushall
+
+HashSet
+
+3)hget Customer:1 address
+--result
+(nil)
+
+4) hget Customer:2 name
+--result
+(nil)
+
+6) hgetall Customer:2
+--result
+(empty array)
+
+9)hkeys Customer:2
+--result
+(empty array)
+
+10)hvals Customer:2
+--result
+(empty array)

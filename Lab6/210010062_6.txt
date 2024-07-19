@@ -1,0 +1,45 @@
+1) match (a:Person)-[:DIRECTED]->(m:Movie)<-[:REVIEWED]-(p:Person)
+   return m.title AS MovieTitle, m.rating AS Rating, COLLECT(a.name) AS          
+   Directors; 
+
+2) match (p:Person) optional match (p) -[r:DIRECTED]->(m:Movie) return  
+   p.name as NAME, collect(distinct m.title) as MoviesDirected;
+
+3) match (p:Person {name: 'Tom Hanks'})-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-
+  (c:Person)  return c.name AS CoWorkerName, m.title AS MovieTitle;
+
+4) match (p:Person {name: 'Tom Hanks'})-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-
+  (c:Person)  return c.name AS CoWorkerName, collect(m.title) as Movietitle;
+  
+----- The above code is generating duplicates to me so I have written other version of code using where key !! -------
+
+4)) match (p:Person {name: 'Tom Hanks'})-[:ACTED_IN]->(m:Movie)<- 
+    [:ACTED_IN]-(c:Person)  WHERE p <> c
+    with p, c, COLLECT(DISTINCT m.title) AS commonMovies
+    return c.name AS CoWorkerName, commonMovies;
+
+
+5) match (p:Person)-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-
+  (c:Person)  return [c.name, p.name] , collect(m.title) as Movietitle;
+
+
+6) match(p:Person)-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-(c:Person)
+   where p.name < c.name
+   return [p.name,c.name],collect(m.title)
+
+7) match (p:Person)
+   where (p.born) is not null
+   set p.CurrentAge = date().year - toInteger(p.born);
+
+ 
+8) match (p:Person) optional match  (p)-[:ACTED_IN]->(m:Movie)
+   with p, collect(DISTINCT m) AS movies
+   set p.NumMoviesActed = size(movies);
+
+9) match(p:Person)
+   optional match (p)-[:REVIEWED]->(m:Movie)
+   return p.name as personName, collect(m.title) as ReviewedMovies
+
+10) match(p:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(c:Person)
+    return m.title,size(collect(distinct p.name)) as Actors,size(collect(distinct c.name)) as  
+    Directors

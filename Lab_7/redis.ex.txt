@@ -1,0 +1,171 @@
+1) set client1 Alice
+ok
+get client1 
+{we get alice }
+2)del client1
+del clie
+
+set client:1:level 1
+
+get client:1:level 
+
+incr client:1:level 2
+
+get client:1:level 
+
+
+get client:1:name
+incr client:1: name
+
+incr client:1
+
+exists client:1:name
+
+exists client:1:na
+
+-----------------
+set message "Hello world"
+
+expire message 50
+
+ttl message 
+ttl message
+(time to live ttl----it reduces when there is no key in ur database }
+
+ttl client:1:name 
+{if ans =-1...key exists but not ttl}
+
+
+8) setex message2 "hello sakeena"
+ttl message2 
+
+persist message2 
+{key exists but not 
+....to stop the ttl we use this persist }
+
+ -------page3
+
+mset server:1:name Apache server:1:port 8000
+
+append server:1:name "Lite"
+
+get server:1:name server:1:identifier
+
+get server:1:name
+
+get server:1:identifier "Apache lite" 
+flushall
+{now there is ntg in the data after fklushing all}
+
+rpush customers alice bob charles 
+{size of this customer key is 3}{rightpush =rpush, left push =lpush}
+
+lrange customers 0 2
+
+
+lrange customers 1 2 
+{ans : u get only bob nd charles}
+
+larange customers 4 5 
+{gives empty array}
+
+
+lrange customers 0 -1 
+{when we dont know the size of the array }
+
+linsert customers after "bob" "harry"
+
+llen customers 
+{length of the array or size }
+
+rpop customers "charles"
+
+-------------------------------------------------------
+for sets ::
+
+sadd courses CS maths physics 
+
+smembers courses 
+sadd courses maths 
+smembers courses 
+
+scard courses 
+
+sismember courses maths 
+
+smove courses basic physics 
+
+smembers basic 
+smembers courses 
+
+------------ordered sets -------
+
+zadd clients 3500 Harry 330 0 Alice 3500 Charles 3400 Robert 
+
+zrange clients 0 -1
+
+zrank clients Robert 
+zrank clients Alice 
+
+zincrby clients 500 Robert "3900"
+
+zrange clients 0 -1 
+
+-------hash set ------------
+Hset customer:1 name Alice income 3200 
+
+hget customer:1 name "Alice"
+hgetall customer:1 4
+hkeys customer:1 
+
+hvals customer:1
+hlen customer:1 
+hincrby customer:1 income 200
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

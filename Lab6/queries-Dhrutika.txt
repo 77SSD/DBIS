@@ -1,0 +1,102 @@
+Modify nodes and relationships
+
+1)match (m:Movie)
+  where m.released < 2010
+  set m:OlderMovie
+  return 
+2)create (:Movie {title : "Forrest Gump"})
+3)match (m:Movie {title : "Forrest Gump"})
+  SET m.released =1994, m.tagline = "Life is like a chocolate Box. You never know what you gonna get" , m.LengthInMinutes =142
+4)match (m:Movie {title : "Forrest Gump"}) 
+  SET m.LengthInMinutes = Null
+5)match (m:Movie {title: "Forrest Gump"}) 
+  match (p:Person) 
+  where p.name in ["Robin Wright", "Tom Hanks", "Gary Sinise"] create (p)-[:ACTED_IN]->(m)
+6)match (m:Person {name : "Tom Hanks"}) 
+  match (p:Person {name:"Gary Sinise"})     
+  create (m)-[:HELPED]->(p)
+7)match (m:Person {name : "Tom Hanks"})-[r:HELPED]->(p:Person {name:"Gary Sinise"})     
+set r.value="war history"
+8)match (m:Person {name : "Tom Hanks"})-[r:HELPED]->(p:Person {name:"Gary Sinise"})     
+set r.value=Null
+9)match (m:Person {name : "Tom Hanks"})-[r:HELPED]->(p:Person {name:"Gary Sinise"})     
+delete r
+10)match (m:Movie {title :"Forrest Gump"})    
+   delete m
+   yes,there is an errorr
+  match (m:Movie {title :"Forrest Gump"})<-[r]-(p:Person)    
+  delete r
+  match (m:Movie {title :"Forrest Gump"})    
+  delete m
+11)match (m) remove m:OlderMovie
+
+Constrainsts and Keys
+
+1)CREATE CONSTRAINT PersonNameUniqueConstraint(name of constarint) FOR (p:Person) REQUIRE p.name IS UNIQUE
+
+2)error:already exists with label `Person` and property `name` = 'Tom Hanks'
+
+4)MATCH (p:Person)
+WHERE p.born IS NULL
+SET p.born = 0
+
+CREATE CONSTRAINT PersonBornExistsConstraint FOR (p:Person) REQUIRE p.born IS NOT NULL
+
+5)error:with label `Person` must have the property `born`
+
+6)CREATE CONSTRAINT ActedInRolesExistConstraint FOR ()-[r:ACTED_IN]-() REQUIRE r.roles IS NOT NULL
+
+8)CREATE CONSTRAINT titleUnique FOR (m:Movie) REQUIRE m.title IS UNIQUE
+
+9)DROP CONSTRAINT titleUnique
+
+10)CREATE CONSTRAINT newKey FOR (m:Movie) REQUIRE (m.title,m.released) IS NODE KEY
+
+11)
+
+12)DROP CONSTRAINT ActedInRolesExistConstraint
+
+Shortest path
+
+
+EXERCISES
+
+1)match (p:Person)-[r:REVIEWED]->(m:Movie)<-[:DIRECTED]-(a:Person)
+return m.title,r.rating,collect(a.name)
+
+2)match(p:Person)
+optional match (p)-[:DIRECTED]-(m:Movie)
+return p.name,collect(m.title)
+
+3)match(p:Person{name:'Tom Hanks'})-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-(a:Person)
+return m.title,collect(a.name)
+
+4)match(p:Person{name:'Tom Hanks'})-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-(a:Person)
+return a.name,collect(m.title)
+
+5)match(p:Person)-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-(a:Person)
+return [p.name,a.name],collect(m.title)
+
+6)match(p:Person)-[:ACTED_IN]->(m:Movie)<-[:ACTED_IN]-(a:Person)
+where p.name<a.name
+return [p.name,a.name],collect(m.title)
+
+7)MATCH (p:Person)
+WHERE p.born IS NULL
+SET p.born = 0
+match(p:Person)
+return p.name,p.born,p.Current_Age
+
+8)MATCH (p:Person)
+OPTIONAL MATCH (p)-[:ACTED_IN]->(m:Movie)
+WITH p, COUNT(m) AS Num_movies_acted
+SET p.Num_movies_acted = CASE WHEN Num_movies_acted IS NULL THEN 0 ELSE Num_movies_acted END
+
+
+
+9)match(p:Person)
+optional match (p)-[:REVIEWED]-(m:Movie)
+return p.name,collect(m.title)
+
+10)match(p:Person)-[:ACTED_IN]->(m:Movie)<-[:DIRECTED]-(a:Person)
+return m.title,size(collect(distinct p.name)) as actors,size(collect(distinct a.name)) as directors

@@ -1,0 +1,361 @@
+--1)
+/*SELECT pname
+FROM department,professor
+WHERE department.dname=professor.dname AND numphds < 50; */
+ 
+
+
+ --2)
+/*
+ SELECT std_name 
+ FROM student
+ WHERE student.gpa = ( SELECT MAX(gpa)
+                    FROM student ); */
+
+--3) 
+/*
+SELECT course.cno,avg(student.gpa)
+FROM student,department,enroll,course
+WHERE student.std_id=enroll.std_id AND department.dname = 'Computer Sciences' 
+AND course.dname = 'Computer Sciences' AND enroll.dname=department.dname
+GROUP BY course.cno 
+*/
+
+
+--4) 
+/*
+SELECT student.std_id,student.std_name
+FROM student
+ JOIN enroll ON student.std_id = enroll.std_id
+ GROUP BY student.std_id 
+ WHERE course.cno = (SELECT COUNT(enroll.cno)>= ALL (SELECT count (enroll.cno) )
+                       FROM enroll);
+--enroll.std_id = student.std_id AND enroll.dname=course.dname AND 
+--GROUP BY student.std_id ;
+ */
+
+ --5)
+/*SELECT department.dname
+FROM department,professor
+WHERE department.dname = professor.dname AND 
+       COUNT(professor.pname) = SELECT max(professor_count)
+                                FROM
+                                (SELECT department.dname, COUNT(professor.pname) as professor_count
+        FROM department) ; */
+
+
+
+/*
+SELECT department.dname
+FROM department 
+JOIN professor  ON department.dname = professor.dname
+GROUP BY department.dname
+HAVING( COUNT(professor.pname) = 
+    SELECT MAX(professor_count)
+    FROM (
+        SELECT department.dname, COUNT(professor.pname) as professor_count
+        FROM department 
+        JOIN professor  ON department.dname = professor.dname
+        GROUP BY department.dname
+    ) counts
+);
+*/
+
+-- 6) 
+/*
+SELECT std_name, major.dname
+FROM student 
+JOIN major  ON student.std_id = major.std_id
+JOIN enroll  ON student.std_id = enroll.std_id
+JOIN course  ON enroll.cno = course.cno
+WHERE course.cname = 'Thermodynamics';
+*/
+
+--7)
+/*
+SELECT dname
+FROM department
+WHERE dname NOT IN (SELECT department.dname
+    FROM department, major, student
+    WHERE department.dname = major.dname AND major.std_id = student.std_id
+    AND student.std_id IN (
+        SELECT enroll.std_id
+        FROM enroll, course 
+        WHERE enroll.cno = course.cno AND course.cname = 'Compiler Construction'
+    )
+); */
+
+--8)
+/*
+
+SELECT
+    DISTINCT student.std_namename
+FROM
+    student s
+    JOIN enroll e ON s.std_id = e.std_id
+    JOIN course c ON e.dname = c.dname
+    AND e.cno = c.cno
+WHERE
+    c.dname IN ('Civil Engineering', 'Mathematics')
+GROUP BY
+    s.std_id,
+    s.sname
+HAVING
+    SUM(c.dname = 'Civil Engineering') >= 1
+    AND SUM(c.dname = 'Mathematics') <= 2;
+    */
+
+--9) 
+/*
+SELECT department.dname , AVG(student.gpa) AS avg_gpa
+FROM department
+JOIN major on department.dname = major.dname   JOIN student on major.std_id = student.std_id
+WHERE student.gpa < 1.5  GROUP BY department.dname;
+*/
+--10)
+/*
+SELECT student.std_id,student.std_name,student.gpa
+FROM student 
+JOIN (
+    SELECT DISTINCT major.std_id
+    FROM major 
+    JOIN course ON major.dname = course.dname AND course.dname = 'Civil Engineering'
+    LEFT JOIN enroll ON major.std_id = enroll.std_id AND course.cno = enroll.cno
+    GROUP BY major.std_id
+    HAVING COUNT(DISTINCT course.cno) = COUNT(enroll.cno)
+) courseenroll_students ON student.std_id = courseenroll_students.std_id;
+*/
+
+--10)
+/*
+SELECT s.std_id, s.std_name, s.gpa
+FROM student s
+WHERE NOT EXISTS (
+    SELECT c.cno
+    FROM course c
+    WHERE c.dname = 'Civil Engineering'
+    AND NOT EXISTS (
+        SELECT 1
+        FROM enroll e
+        WHERE e.std_id = s.std_id AND e.cno = c.cno
+    )
+);
+*/
+ 
+ --Salesdb queries--
+
+ --1) 
+ /* 
+ createdb salesdb */
+ --2)
+
+ -- \i tableSales.sql
+ --3)
+ -- \i dataSales.sql
+
+ --4)
+ /*
+ SELECT CUST_NAME
+ FROM Customer
+ WHERE GRADE = 2; */
+
+ --5) 
+ /*
+ SELECT ORD_NUM,ORD_DATE,ORD_DESCRIPTION 
+ FROM Orders
+ ORDER BY ORD_DATE  ASC; */
+ 
+ --6) 
+ /* 
+ SELECT ORD_NUM,ORD_DATE,ORD_AMOUNT
+ FROM Orders
+ WHERE ORD_AMOUNT >= 800 ; */
+ --7) 
+ /*
+ SELECT * 
+ FROM Customer
+ ORDER BY  WORKING_AREA ASC, CUST_NAME DESC; */
+
+ --8)  
+ /*
+ SELECT CUST_NAME
+ FROM Customer
+ WHERE CUST_NAME LIKE 'S%'; */
+
+--9)
+/* 
+SELECT ORD_NUM 
+FROM Orders
+WHERE ORD_DATE >= '2008-03-01' AND ORD_DATE < '2008-03-31';
+*/
+
+--10)
+/*
+SELECT ORD_NUM, ORD_AMOUNT * 1.10 AS NEW_ORDER_AMOUNT
+FROM Orders; 
+*/
+
+--11) 
+/* 
+SELECT ORD_NUM, ORD_AMOUNT-ADVANCE_AMOUNT AS Balance_Amount
+FROM Orders
+WHERE ORD_AMOUNT BETWEEN 2000 AND 4000;
+*/
+
+--12)
+/* 
+SELECT  ORD_NUM,CUST_CODE,ORD_AMOUNT
+FROM Orders
+WHERE ORD_AMOUNT IN ( SELECT ORD_AMOUNT
+FROM Orders
+WHERE CUST_CODE='C00022'); 
+
+*/
+--13) 
+/*
+SELECT AGENT_NAME,AGENT_CODE
+FROM Agents
+WHERE COMMISSION > ALL (
+SELECT COMMISSION
+    FROM Agents
+    WHERE WORKING_AREA = 'Bangalore');
+
+*/
+--14)
+/*
+SELECT AGENT_NAME
+FROM Agents
+WHERE COMMISSION > SOME (
+SELECT COMMISSION
+    FROM Agents
+    WHERE WORKING_AREA = 'Bangalore');
+*/
+
+--15) 
+/*
+SELECT DISTINCT AGENT_CODE 
+FROM Orders;
+*/
+--16) 
+/*
+SELECT CUST_NAME
+FROM Customer
+WHERE CUST_CODE NOT IN (
+    SELECT DISTINCT CUST_CODE
+    FROM Orders);*/
+
+--17) 
+/*
+SELECT Agents.AGENT_CODE 
+FROM Agents,Orders
+WHERE Orders.AGENT_CODE = Agents.AGENT_CODE AND  ORD_AMOUNT>=800;
+*/
+
+--18) 
+/*
+SELECT Agents.AGENT_NAME 
+FROM Agents,Orders
+WHERE Orders.AGENT_CODE = Agents.AGENT_CODE AND  ORD_AMOUNT>=800;
+*/
+
+--19)
+/*
+SELECT CUST_NAME,CUST_CODE
+FROM Customer
+WHERE CUST_CITY IN ('Paris','New York','Bangalore');
+*/
+
+--20)
+/*
+SELECT AGENT_NAME 
+FROM Agents,Orders
+WHERE Agents.AGENT_CODE = Orders.AGENT_CODE AND ORD_AMOUNT=1000;
+*/
+
+--21)
+/*
+SELECT 
+    SUM(ORD_AMOUNT) AS Total_Order_Amount,
+    AVG(ORD_AMOUNT) AS Average_Order_Amount,
+    MIN(ORD_AMOUNT) AS Min_Order_Amount,
+    MAX(ORD_AMOUNT) AS Max_Order_Amount
+FROM Orders;
+*/
+
+--22)
+/*
+SELECT COUNT(*)
+FROM Customer
+WHERE CUST_CITY = 'New York';
+*/
+
+--23) 
+/*
+SELECT COUNT(DISTINCT ORD_AMOUNT) AS Distinct_order_amount_count
+FROM   Orders;
+ */
+
+ --24) 
+ /*
+ SELECT Agents.AGENT_NAME,Agents.AGENT_CODE 
+ FROM Agents
+ JOIN Orders ON Agents.AGENT_CODE = Orders.AGENT_CODE
+ GROUP BY Agents.AGENT_NAME,Agents.AGENT_CODE
+ HAVING COUNT (Orders.ORD_NUM )>=2;
+*/
+
+--25) 
+/*
+SELECT COUNT(*)
+FROM Agents
+GROUP BY WORKING_AREA;
+*/
+
+--26) 
+/*
+SELECT AGENT_NAME,Agents.WORKING_AREA
+FROM Agents
+JOIN Orders ON Agents.AGENT_CODE = Orders.AGENT_CODE
+GROUP BY Agents.AGENT_NAME, Agents.WORKING_AREA
+HAVING COUNT(Orders.ORD_NUM) >= 2;
+*/
+
+--27)
+/*
+SELECT AGENT_NAME,AVG(ORD_AMOUNT) AS Avg_ord_amount
+FROM Agents
+JOIN Orders ON Orders.AGENT_CODE=Agents.AGENT_CODE
+GROUP BY AGENT_NAME;
+*/
+
+--28)  null value in column "agent_code" of relation "customer" violates not-null constraint
+/*
+DELETE FROM Agents
+WHERE WORKING_AREA = 'Bangalore';
+*/
+--29)
+/*
+ALTER TABLE Customer
+ADD Address VARCHAR(50) DEFAULT NULL;
+*/
+/*
+UPDATE Customer
+SET Address = 'Hostel5, XYZ City, IITDH'
+WHERE CUST_CODE = 'C00013';
+*/
+
+--30) 
+/*
+ALTER TABLE Agents
+DROP COLUMN Country;
+*/
+
+--31)
+--DELETE FROM Orders;
+
+
+--32)
+/*
+DROP TABLE Customers 
+CASCADE ;
+*/

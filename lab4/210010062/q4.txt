@@ -1,0 +1,86 @@
+--TERMINAL 1
+ EX1)
+ Enter the number of movies:1
+ Enter movie id of movie number 1:924
+ Enter role of the actor in movie number 1:Rana
+ Transaction committed successfully.
+
+ EX2)
+ Enter the number of movies:1
+ Enter movie id of movie number 1:926
+ Enter role of the actor in movie number 1:Vikram
+ Transaction committed successfully.
+
+ EX3)
+ Enter the number of movies:2
+Enter movie id of movie number 1:901
+Enter role of the actor in movie number 1:Ajay
+Enter movie id of movie number 2:903
+Enter role of the actor in movie number 2:Police
+Transaction committed successfully.
+
+EX4)
+Enter the number of movies:2
+Enter movie id of movie number 1:902
+Enter role of the actor in movie number 1:Arun
+Enter movie id of movie number 2:222
+Enter role of the actor in movie number 2:Vinoy
+Movie number 2 is not present in the database. Database is not updated
+ROLLBACK
+
+EX5)
+Enter the number of movies:2
+Enter movie id of movie number 1:905
+Enter role of the actor in movie number 1:Ajay
+Enter movie id of movie number 2:906
+Enter role of the actor in movie number 2:Arun
+Transaction committed successfully.
+
+
+ 
+ --TERMINAL 2
+ EX1)
+ Enter the number of movies:1
+ Enter movie id of movie number 1:924
+ Enter role of the actor in movie number 1:
+ Error: duplicate key value violates unique constraint "movie_cast_pkey"
+ DETAIL:  Key (mov_id, act_id)=(924, 131) already exists.
+
+ EX2)
+ Enter the number of movies:1
+ Enter movie id of movie number 1:927
+ Enter role of the actor in movie number 1:Ajay
+ Transaction committed successfully.
+
+EX3)
+Enter the number of movies:902
+Enter movie id of movie number 1:Varun
+ROLLBACK
+Error: invalid literal for int() with base 10: 'Varun'
+PS C:\Users\Dhrutika\Downloads\Handout-1> python .\lab6.py
+Enter the number of movies:2
+Enter movie id of movie number 1:902
+Enter role of the actor in movie number 1:Varun
+Enter movie id of movie number 2:903
+Enter role of the actor in movie number 2:Police
+ROLLBACK
+Error: duplicate key value violates unique constraint "movie_cast_pkey"
+DETAIL:  Key (mov_id, act_id)=(903, 131) already exists.
+ 
+EX4)
+Enter the number of movies:2
+Enter movie id of movie number 1:902
+Enter role of the actor in movie number 1:Arun
+Enter movie id of movie number 2:904
+Enter role of the actor in movie number 2:Vinoy
+Transaction committed successfully.
+
+EX5)
+Enter the number of movies:2
+Enter movie id of movie number 1:905
+Enter role of the actor in movie number 1:Ajay
+Enter movie id of movie number 2:906
+Enter role of the actor in movie number 2:Arun
+ROLLBACK
+Error: duplicate key value violates unique constraint "movie_cast_pkey"
+DETAIL:  Key (mov_id, act_id)=(905, 131) already exists.

@@ -1,0 +1,74 @@
+Exercise (Redis)
+
+1)set course:1:title "Data Management"
+  --OK
+  set course:1:NumberOfStudents 3
+  --OK
+  sadd course:1:textbooks "Fundamentals of Database Systems" "No SQL for Mere Mortals"
+  --(integer) 2
+
+2) zadd course:1:students 9.1 Alice 8.9 Bob 9.0 Charles
+   --(integer) 3
+
+3)zrange course:1:students 0 -1
+  --1) "Bob"
+  --2) "Charles"
+  --3) "Alice"
+
+4)scard course:1:textbooks
+  --(integer) 2
+
+5)rename course:1:textbooks course:1:materials
+  --OK
+
+6) sadd course:1:materials slides
+   --(integer) 1
+
+7)set course:1:assignment4 "Redis and MongoDB"
+  --OK
+
+8)set course:1:handout10 "MongoDB"
+  --OK
+  expire course:1:handout10 100
+  --(integer) 0
+
+9)keys *
+  --1) "course:1:materials"
+  --2) "course:1:title"
+  --3) "course:1:students"
+  --4) "course:1:handout10"
+  --5) "course:1:assignment4"
+  --6) "course:1:NumberOfStudents"
+
+10)del course:1:NumberOfStudents
+   --(integer) 1
+
+
+Exercise (MongoDB)
+
+1)show dbs
+--sample_airbnb        52.48 MiB
+--sample_analytics      9.64 MiB
+--sample_geospatial     1.24 MiB
+--sample_guides        40.00 KiB
+--sample_mflix        112.05 MiB
+--sample_restaurants    6.55 MiB
+--sample_supplies       1.05 MiB
+--sample_training      49.27 MiB
+--sample_weatherdata    2.60 MiB
+--admin               368.00 KiB
+--local                 4.50 GiB
+
+2)sample_mflix> show collections
+--comments
+--embedded_movies
+--movies
+--sessions
+--theaters
+--users
+
+3) db.listingsAndReviews.find({ "address.country": "Australia" }, { "_id": 1, "name": 1 });
+
+4)db.listingsAndReviews.find({'bedrooms':{$gte:2}}, { "_id": 1, "name": 1 });
+
+5)db.listingsAndReviews.find({'address.location.is_location_exact':true}, { "_id": 1, "name": 1,"address":1 });

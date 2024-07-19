@@ -1,0 +1,53 @@
+## Exercise -- Redis
+
+1)set course:1:title "Data Management"
+  
+  set course:1:NumberOfStudents 3
+ 
+  SADD course:1:textbooks "Fundamentals of Database Systems" "No SQL for Mere Mortals"
+  
+
+2) zadd course:1:students 9.1 Alice 8.9 Bob 9.0 Charles
+   
+
+3)zrange course:1:students 0 -1
+  
+
+4)scard course:1:textbooks
+  --(integer) 2
+
+5)rename course:1:textbooks course:1:materials
+  
+
+6) sadd course:1:materials slides
+   --(integer) 1
+
+7)set course:1:assignment4 "Redis and MongoDB"
+  
+
+8)set course:1:handout10 "MongoDB"
+  
+  expire course:1:handout10 100
+  --(integer) 0
+
+9)keys *
+  
+
+10)del course:1:NumberOfStudents
+   
+
+
+### Exercise --MongoDB
+
+1)show databases
+            
+
+2)sample_mflix> 
+show collections
+
+
+3) db.listingsAndReviews.find({ "address.country": "Australia" }, { "_id": 1, "name": 1 });
+
+4)db.listingsAndReviews.find({'bedrooms':{$gte:2}}, { "_id": 1, "name": 1 });
+
+5)db.listingsAndReviews.find({'address.location.is_location_exact':true}, { "_id": 1, "name": 1,"address":1 });

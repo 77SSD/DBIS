@@ -1,0 +1,169 @@
+// Create and list database
+
+
+// Q1
+show databases
+
+// Q2
+use CompanyDB
+
+// Q3
+No it will not display until we add some documents into it
+
+
+
+
+// Insert
+
+
+// Q1
+use CompanyDB
+
+// Q2
+db.createCollection("customers")
+db.customers.insertOne({name:"Alice",age:30})
+
+// Q3
+Yes now we can see CompanyDB
+
+// Q4
+show collections
+
+// Q5
+db.customers.insertMany([{name:"Bob"},{name:"Charlie",age:26,level:1},{name:"Darshan",age:27}])
+
+
+
+
+// Find
+
+
+// Q1
+db.customers.find()
+
+// Q2
+db.customers.find({age:27})
+
+// Q3
+db.customers.find({age:{$gte:25}})
+
+// Q4
+db.customers.find({age:{$lt:27}})
+
+// Q5
+db.customers.find({age:{$lte:27}})
+
+// Q6
+db.customers.find({age:{$lte:27}},{name:1})
+
+// Q7
+db.customers.find({age:{$lte:27}},{name:1,age:1})
+
+
+
+
+// Nested documents
+
+
+// Q1
+db.customers.insertOne({name:"Harry",age:25,address:{
+street:"75, Bd. Saint Germain",
+city:"Paris",
+Country:"France"
+}})
+
+
+// Q2
+db.customers.find({"address.city":"Paris"})
+
+
+
+
+// Update
+
+
+// Q1
+db.customers.updateOne({name:"Alice"},{$set:{age:29}})
+
+// Q2
+It will display an error saying it requires an atomic operator
+
+
+
+
+// Delete
+
+
+// Q1
+db.customers.deleteOne({name:"Bob"})
+
+// Q2
+db.customers.find()
+
+// Q3
+db.customers.deleteMany({})
+
+// Q4
+db.dropDatabase()
+
+
+
+
+// Exercise (Redis) 
+
+
+// Q1
+SET course:1:title "Data Management"   
+SET course:1:NumberOfStudents 3       
+SADD course:1:textbooks "Fundamentals of Database Systems" "No SQL for Mere Mortals" 
+
+// Q2
+ZADD course:1:students 9.1 "Alice" 8.9 "Bob" 9.0 "Charles"
+
+// Q3
+ZRANGE course:1:students 0 -1
+
+// Q4
+SCARD course:1:textbooks
+
+// Q5
+RENAME course:1:textbooks course:1:materials
+
+// Q6
+SADD course:1:materials "slides"
+
+// Q7
+RPUSH course:1:assignment4 "Redis" "MongoDB"
+
+// Q8
+EXPIRE course:1:assignment4 100
+// ( As there is no such key "course:1:Handout10" )
+
+// Q9
+keys *
+
+// Q10
+DEL course:1:NumberOfStudents
+
+
+
+
+// Exercise (MongoDB)
+
+
+// Q1
+show databases
+
+// Q2
+use sample_mflix
+show collections
+
+// Q3
+use sample_airbnb
+db.listingsAndReviews.find({country:"Australia"},{name:1})
+
+// Q4
+db.listingsAndReviews.find({bedrooms:{$gte:2}},{name:1})
+
+// Q5
+db.listingsAndReviews.find({"location.type":"Points"},{name:1,address:1})

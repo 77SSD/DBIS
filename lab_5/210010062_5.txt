@@ -1,0 +1,35 @@
+1) match(n:Movie) return n
+
+2) match (n:Movie) return n.title, n.released, n.tagline 
+
+3) match (n:Person) return n.name as Name,n.born as 'Year of birth'
+
+4) match (n:Person) --(a:Movie{title:"The Matrix"}) return n,a
+
+5) match (n:Person) -[r]-(a:Movie{title:"The Matrix"}) return n,a,r
+
+6) match (n:Movie{released:2000}) return n  
+
+7) match(n:Movie)<-[r:ACTED_IN]-(p:Person) where p.name ends with "Thompson" return n.title,p.name
+
+8) match (n:Movie)<-[r:ACTED_IN]-(p:Person)where n.title in r.roles return n.title,p.name,r.roles
+
+9) match (a:Person)-[r]-> (n:Movie)--(p:Person{name:"Tom Hanks"}) where type(r)='ACTED_IN' or type(r)='DIRECTED' return a.name 
+
+10) match (n:Movie)<-[r:REVIEWED]-(p:Person) return n.title,r.rating,r.summary, p.name
+
+11) match (n:Movie)<-[r:DIRECTED]-(p:Person) return collect(n.title),p.name
+
+12) match (p:Person)-[r:ACTED_IN]->(m:Movie)<-[k:ACTED_IN]-(a:Person{name:"Tom Cruise"}) return m.title,collect(p.name) as CoStars 
+
+13) match (a:Person)-[x:ACTED_IN]->(n:Movie)<-[r:DIRECTED]-(p:Person) return p.name,size(collect(a.name)), collect(a.name)
+
+14) match (a:Person)-[x:DIRECTED]->(n:Movie) with collect(a.name) as director where size(director)>=2 optional match (n)<- [r:REVIEWED]-(p:Person) return n.title,p.name
+
+15) match( n:Movie)<-[r:ACTED_IN]-(p:Person) where n.released >=1990 and n.released < 2000 return n.title,collect(p.name), n.released
+
+16) match( n:Movie)<-[r:ACTED_IN]-(p:Person) where n.released >=1990 and n.released < 2000 return collect(n.title),n.released 
+
+17) match( n:Movie)<-[r:ACTED_IN]-(p:Person) where n.released >=1990 and n.released < 2000 return collect(n.title),n.released  order by n.released desc 
+
+18) match (n:Movie)<-[r:ACTED_IN]-(p:Person) with collect(n.title) as Movies, p.name as actor  where size(Movies) >=5 return actor, Movies

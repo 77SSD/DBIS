@@ -1,0 +1,28 @@
+/*Commands used in Terminal 1*/
+
+psql moviedb 
+begin transaction;
+
+moviedb=# begin transaction;
+BEGIN
+moviedb=*# INSERT INTO actor values('777','Sakeena','RT','F');
+INSERT 0 1
+moviedb=*# commit transaction;
+COMMIT
+moviedb=# end transaction;
+WARNING:  there is no transaction in progress
+COMMIT
+moviedb=# begin transaction;
+BEGIN
+moviedb=*# INSERT INTO actor values('777','Sadik','RT','M');
+ERROR:  duplicate key value violates unique constraint "actor_pkey"
+DETAIL:  Key (act_id)=(777) already exists.
+moviedb=!# end transaction;
+ROLLBACK
+moviedb=# begin transaction;
+BEGIN
+moviedb=*# INSERT INTO actor values('778','Saash','RT','M');
+INSERT 0 1
+moviedb=*# rollback transaction;
+ROLLBACK
+moviedb=#

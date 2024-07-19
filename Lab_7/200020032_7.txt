@@ -1,0 +1,133 @@
+// Insert and Delete
+
+
+// Q3
+set client1 Bob
+// result : new value of client1 is Bob
+
+// Q4
+get client33
+// result : nil (since client33 is not present in the database)
+
+// Q6
+del client33
+// result :  (integer) 0 (since client33 is not present in the database)
+
+// Q7
+set client:1:name Alice
+
+// Q8
+set client:1:level 1
+
+
+
+// Delete based on time
+
+// Q2
+exists client:1:address
+// result : (integer) 0 (since client:1:address does not exist)
+
+// Q3
+set Message "Hello world"
+
+// Q6
+ttl client:1:name
+// result : (integer) -1 (since client:1:name has not been assigned an expiry time)
+
+// Q7
+ttl client:1:address
+// result : (integer) -2 (since client:1:address does not exist in the database)
+
+// Q10
+// result : (integer) 0 (since client:1:name does not have an expiration time)
+
+// Q11
+// result : (integer) 0 (since client:1:address does not exist in the database)
+
+
+
+// List
+
+// Q2
+del Customers
+lpush Customers Alice Bob Charles
+// list is [Charles, Bob, Alice]
+
+// Q4
+lrange Customers 0 1
+
+// Q6
+linsert Customers before Bob Dumbledore
+
+// Q9
+lpop Customers
+// result : "Charles" and list length is 3
+
+// Q10
+flushall
+
+
+
+// Set
+
+// Q2
+sadd courses Economics
+
+// Q4
+sadd courses Physics
+// result : (integer) 0 (since Physics is already present in the set, hence "Physics" is not added again)
+
+// Q7
+sismember courses Chemistry
+// result : (integer) 0 (since Chemistry is not a member of the set of the value courses)
+
+// Q10
+srem courses Chemistry
+// result :  0 (since Chemistry is not present in the set, hence "Chemistry" is not deleted)
+
+// Q11
+flushall
+
+
+
+// Ordered Set
+
+// Q3
+zadd Clients 3200 Charles
+// result : (integer) 0 (since Charles is already present in the set, hence "Charles" is not added again)
+
+// Q5
+zrank Clients Dumbledore
+// result : (nil) (since Dumbledore is not present in the set)
+
+// Q7
+zrange Clients 0 -1
+
+// Q8
+flushall
+
+
+
+// Hash set
+
+// Q3
+hget Customer:1 address
+// result : (nil) (since address is not present in the hash set)
+
+// Q4
+hget Customer:2 name
+// result : (nil) (since Customer:2 is not present in the hash set)
+
+// Q6
+hgetall Customer:2
+// result : (empty list or set) (since Customer:2 is not present in the hash set)
+
+// Q9
+hkeys Customer:2
+// result : (empty list or set) (since Customer:2 is not present in the hash set)
+
+// Q10
+hvals Customer:2
+// result : (empty list or set) (since Customer:2 is not present in the hash set)
+
+

@@ -1,0 +1,54 @@
+Create and list database
+
+2)To create db:use <name of db>
+
+Insert
+
+1)use companydb
+
+2)To create collection:db.customer.insertOne({'name':'Alice','age':24})
+				   .insertMany([{},{},...])
+
+4)To display all the collections:show collections
+
+5)To insert many objects into the collection: db.customer.insertMany
+([{'name':'Bob'},{'name':'Charles','age':26,'level':1},{'name':'Darshan','age':27}])
+
+Find 
+
+2)db.customer.find({'age':27})
+
+3)db.customer.find({'age':{$gte:25}})
+
+6) db.customer.find({'age':{$lte:27}},{'name':1})
+
+7) db.customer.find({'age':{$lte:27}},{'level':0})
+
+ db.customer.find({'age':{$gt:25,$lte:27}},{'name':1},{'age':1}):25<age<=27
+
+
+Nested documents
+1) db.customer.insertOne({'name':'Harry','age':25,'address':{'street':'75,Bd.Saint Germain', 'city':'Paris','Country':'Dharwad'}})
+2) db.customer.find({'address.Country' :'Dharwad'})
+[
+  {
+    _id: ObjectId("6538ab07a681ab634e11e9d6"),
+    name: 'Harry',
+    age: 25,
+    address: {
+      street: '75,Bd.Saint Germain',
+      city: 'Paris',
+      Country: 'Dharwad'
+    }
+  }
+]
+
+Update
+
+2) db.customer.updateOne({'name':'Alice'},{$set:{'age':29}})
+
+Delete
+
+1) db.customer.drop()
+
+

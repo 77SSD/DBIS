@@ -1,0 +1,94 @@
+// create and list database
+1) show databases
+2) use CompanyDB
+3) no it will not show untill we add some documents init
+
+// Insert
+1) use CompanyDB
+2) db.createCollection("customers")
+db.customers.insertOne({name:"Alice",age:30})
+3) yes now we can see the CompanyDB
+4) show collections
+5) db.customers.insertMany([{name:"Bob"},{name:"Charlie",age:26,level:1},{name:"Darshan",age:27}])
+
+// Find
+1) db.customers.find()
+2) db.customers.find({age:27})
+3) db.customers.find({age:{$gte:25}})
+4) db.customers.find({age:{$lt:27}})
+5) db.customers.find({age:{$lte:27}})
+6) db.customers.find({age:{$lte:27}},{name:1})
+7) db.customers.find({age:{$lte:27}},{name:1,age:1})
+
+// Nested documents
+1) db.customers.insertOne({name:"Harry",age:25,address:{
+street:"75, Bd. Saint Germain",
+city:"Paris",
+Country:"France"
+}})
+
+2) db.customers.find({"address.city":"Paris"})
+
+// Update
+1) db.customers.updateOne({name:"Alice"},{$set:{age:29}})
+2) it will give error saying it requires an atomic operator
+
+// Delete
+1) db.customers.deleteOne({name:"Bob"})
+2) db.customers.find()
+3) db.customers.deleteMany({})
+4) db.dropDatabase()
+
+// Exercise (Redis) 
+1) // To Insert the following keys and values with the appropriately specified data type for the values
+SET course:1:title "Data Management"   
+SET course:1:NumberOfStudents 3       
+SADD course:1:textbooks "Fundamentals of Database Systems" "No SQL for Mere Mortals" 
+
+2) // To Add the following students with the key course:1:students where are values form an ordered sets. Use the grade points (given below) as the score.
+ZADD course:1:students 9.1 "Alice" 8.9 "Bob" 9.0 "Charles"
+
+
+3) // TO Retrieve all the student names in the key course:1:students
+ZRANGE course:1:students 0 -1
+
+4) // To Find the size of the values with the key course:1:textbooks
+SCARD course:1:textbooks
+
+5) // To Rename the key course:1:textbooks to course:1:materials
+RENAME course:1:textbooks course:1:materials
+
+6) // To Add a new value slides to the key course:1:materials
+SADD course:1:materials "slides"
+
+7) // To Add a new key course:1:assignment4 with value Redis and MongoDB
+RPUSH course:1:assignment4 "Redis" "MongoDB"
+
+8) // To Set the expiration time for the key course:1:assignment4 to 100 seconds
+EXPIRE course:1:assignment4 100
+// ( As there is no such key "course:1:Handout10" )
+
+9) // To List all the keys in the database
+keys *
+
+10) // To Delete the key course:1:NumberOfStudents along with its value.
+DEL course:1:NumberOfStudents
+
+// Exercise (MongoDB)
+1) // To get the list of databases 
+show databases
+
+2) // To get the list of collections in sample_mflix database 
+use sample_mflix
+show collections
+
+3) // To get id and name of all the houses in sample_airbnb databse that are in Australia
+use sample_airbnb
+db.listingsAndReviews.find({country:"Australia"},{name:1})
+
+4) // To get id and name of all the houses in sample airbnb databse that have 2 or more bedrooms
+db.listingsAndReviews.find({bedrooms:{$gte:2}},{name:1})
+
+5) // To get id, name and address of all the houses in sample airbnb
+databse (there is only one collection) whose location is exact
+db.listingsAndReviews.find({"location.type":"Points"},{name:1,address:1})
